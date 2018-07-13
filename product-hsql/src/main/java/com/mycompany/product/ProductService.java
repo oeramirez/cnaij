@@ -23,8 +23,14 @@ public class ProductService {
 	ProductRepository prodRepo;
 
 	@RequestMapping("/product/{id}")
-	Optional<Product> getProduct(@PathVariable("id") int id) {
-		return prodRepo.findById(id);
+	Product getProduct(@PathVariable("id") int id) {
+		Optional<Product> product = prodRepo.findById(id);
+		
+		if (!product.isPresent()) {
+			throw new BadRequestException(BadRequestException.ID_NOT_FOUND, "No product for id " + id);
+		}
+		
+		return product.get();
 	}
 
 	@RequestMapping(value = "/product", method = RequestMethod.POST)
