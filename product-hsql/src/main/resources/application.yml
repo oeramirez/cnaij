@@ -1,0 +1,31 @@
+server:
+   port: 8080
+
+management.endpoints.web.exposure.include: '*'
+
+eureka:
+   instance:
+      leaseRenewalIntervalInSeconds: 5
+
+---
+spring:
+   profiles: docker
+eureka:
+   instance:
+      preferIpAddress: true
+   client:
+      serviceUrl:
+         defaultZone: http://eureka:8761/eureka/
+         
+---
+spring:
+   profiles: postgres
+   datasource:
+      url: jdbc:postgresql://postgres:5432/product
+      username: dbuser
+      password: dbpass
+      driver-class-name: org.postgresql.Driver
+   jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+         ddl-auto: none
